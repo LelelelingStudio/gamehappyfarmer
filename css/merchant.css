@@ -1,0 +1,227 @@
+/* ============================================================
+   merchant.css  —  植物商人弹窗
+   ============================================================ */
+
+.merchant-info {
+    padding: 0 20px;
+    color: var(--c-accent);
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* -------- 商人头像 + 名字 -------- */
+.merchant-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    background-color: var(--c-primary-bg-light);
+    border-radius: var(--radius-md);
+    margin: 0 20px 15px;
+    border: 2px solid var(--c-border-primary);
+}
+
+.merchant-avatar {
+    font-size: 3rem;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: var(--radius-round);
+    border: 3px solid var(--c-primary);
+    flex-shrink: 0;
+}
+
+.merchant-profile-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.merchant-name {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--c-primary-darker);
+    margin-bottom: 4px;
+}
+
+.merchant-tagline {
+    font-size: 0.9rem;
+    color: var(--c-text-muted);
+    font-style: italic;
+}
+
+/* -------- 物品列表 -------- */
+.merchant-items {
+    padding: 0 20px 20px;
+    overflow-y: auto;
+    max-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.merchant-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background-color: var(--c-panel-solid);
+    border-radius: 8px;
+    border: 2px solid var(--c-border);
+    transition: all var(--t-base);
+    cursor: pointer;
+    gap: 10px;
+}
+
+.merchant-item:hover {
+    border-color: var(--c-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.merchant-item.selected {
+    background-color: var(--c-primary-bg-light);
+    border-color: var(--c-primary);
+}
+
+.merchant-item-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+}
+
+.merchant-item-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--c-primary);
+    flex-shrink: 0;
+}
+
+.merchant-item-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.merchant-item-name {
+    font-weight: bold;
+    color: var(--c-primary-darker);
+    font-size: 1rem;
+    margin-bottom: 3px;
+}
+
+.merchant-item-details > div:not(.merchant-item-name) {
+    font-size: 0.85rem;
+    color: var(--c-text-muted);
+}
+
+.merchant-item-price {
+    font-weight: bold;
+    color: var(--c-accent);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    text-align: right;
+}
+
+/* -------- 单个物品数量选择 -------- */
+.merchant-item-qty {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 4px;
+}
+
+.merchant-item-qty input {
+    width: 60px;
+    padding: 3px 6px;
+    border: 1px solid var(--c-border);
+    border-radius: 4px;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.merchant-item-qty button {
+    background-color: var(--c-primary-lighter);
+    border: none;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: var(--c-primary-darker);
+    font-weight: bold;
+}
+
+.merchant-item-qty button:hover {
+    background-color: var(--c-primary-light);
+}
+
+/* -------- 底部总计 -------- */
+.merchant-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--c-panel-alt);
+    border-top: 2px solid var(--c-border);
+    font-size: 1.3rem;
+    font-weight: bold;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.merchant-total > div {
+    color: var(--c-primary-darker);
+}
+
+#merchant-total-value {
+    color: var(--c-accent);
+}
+
+.merchant-items .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--c-text-light);
+    font-style: italic;
+}
+
+/* ============================================================
+   移动端
+   ============================================================ */
+
+html.layout-mobile .merchant-total {
+    font-size: 1.1rem;
+    padding: 15px;
+}
+
+html.layout-mobile .merchant-item {
+    padding: 10px 12px;
+}
+
+html.layout-mobile .merchant-item-name {
+    font-size: 0.9rem;
+}
+
+html.layout-mobile .merchant-item-price {
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    .merchant-total {
+        font-size: 1.1rem;
+        padding: 15px;
+    }
+    .merchant-item {
+        padding: 10px 12px;
+    }
+    .merchant-item-name {
+        font-size: 0.9rem;
+    }
+    .merchant-item-price {
+        font-size: 1rem;
+    }
+}

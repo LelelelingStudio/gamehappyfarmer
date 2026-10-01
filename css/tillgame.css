@@ -1,0 +1,73 @@
+/* ============================================================
+   tillgame.css  —  翻土小游戏弹窗
+   ============================================================ */
+
+.till-game-content {
+    max-width: 420px;
+}
+
+.till-game-body {
+    padding: 16px 20px 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.till-game-hint {
+    color: var(--c-text-muted);
+    font-size: 0.9rem;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.till-game-stage {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+#till-canvas {
+    width: 260px;
+    height: 260px;
+    max-width: 100%;
+    touch-action: none;
+    cursor: grab;
+    background-color: var(--c-primary-bg);
+    border-radius: 50%;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.06);
+}
+
+#till-canvas:active {
+    cursor: grabbing;
+}
+
+.till-progress-text {
+    font-weight: bold;
+    color: var(--c-primary-darker);
+}
+
+.till-progress-bar {
+    width: 100%;
+    height: 12px;
+    background-color: var(--c-primary-lighter);
+    border-radius: var(--radius-round);
+    overflow: hidden;
+}
+
+.till-progress-fill {
+    height: 100%;
+    width: 0;
+    background: var(--btn-primary-bg);
+    border-radius: var(--radius-round);
+    transition: width 0.2s ease-out;
+}
+
+@media (max-width: 768px) {
+    #till-canvas {
+        width: 210px;
+        height: 210px;
+    }
+}

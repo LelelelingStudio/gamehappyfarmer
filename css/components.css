@@ -1,0 +1,420 @@
+/* ============================================================
+   components.css  —  通用组件
+   按钮 / 过滤器 / 侧栏卡片 / 弹窗 / 通知
+   ============================================================ */
+
+/* ============================================================
+   1. 按钮
+   ============================================================ */
+
+.btn {
+    background: var(--btn-primary-bg);
+    color: var(--c-text-on-dark);
+    border: none;
+    padding: 12px 20px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: bold;
+    transition: all var(--t-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    box-shadow: var(--shadow-primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:hover {
+    background: var(--btn-primary-bg-hover);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-primary-lg);
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
+    transform: rotate(45deg);
+    transition: all var(--t-slow);
+    opacity: 0;
+}
+
+.btn:hover::after {
+    opacity: 1;
+    animation: shine 1.5s;
+}
+
+@keyframes shine {
+    0%   { transform: translateX(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
+}
+
+.btn:active { transform: translateY(-1px); }
+
+.btn:disabled {
+    background: var(--btn-disabled-bg);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.8;
+}
+
+.btn-primary {
+    background: var(--btn-accent-bg);
+    box-shadow: var(--shadow-accent);
+}
+
+.btn-primary:hover {
+    background: var(--btn-accent-bg-hover);
+    box-shadow: var(--shadow-accent-lg);
+}
+
+.btn-secondary {
+    background: linear-gradient(180deg, #9aa7ad, #7d8a90);
+    color: #fff;
+    box-shadow: 0 10px 18px rgba(82, 94, 100, 0.18);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(180deg, #a9b5ba, #6d7a80);
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    border-radius: var(--radius-sm);
+}
+
+.btn-large {
+    padding: 16px;
+    font-size: 1.1rem;
+}
+
+.btn-use-mall-item {
+    background: var(--btn-magic-bg);
+    color: var(--c-text-on-dark);
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all var(--t-base);
+}
+
+.btn-use-mall-item:hover {
+    background: var(--btn-magic-bg-hover);
+    transform: translateY(-2px);
+}
+
+/* ============================================================
+   2. 过滤器按钮（种子商店 / 加工厂）
+   ============================================================ */
+
+.filter-btn {
+    padding: 6px 12px;
+    background-color: var(--c-border);
+    border: none;
+    border-radius: var(--radius-xl);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all var(--t-base);
+    font-size: 0.85rem;
+    color: var(--c-text);
+}
+
+.filter-btn.active {
+    background-color: var(--c-primary);
+    color: var(--c-text-on-dark);
+}
+
+.filter-btn:hover:not(.active) {
+    background-color: #bdbdbd;
+}
+
+/* ============================================================
+   3. 侧栏通用卡片外壳（商店 / 仓库 / 操作）
+   ============================================================ */
+
+.shop-section,
+.inventory-section,
+.action-section {
+    background-color: var(--c-panel-alt);
+    padding: 20px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    border: 2px solid var(--c-border);
+}
+
+.shop-section h2,
+.inventory-section h2,
+.action-section h2 {
+    color: var(--c-primary-darker);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.4rem;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--c-border);
+}
+
+/* ============================================================
+   4. 仓库容量条
+   ============================================================ */
+
+.storage-info {
+    background-color: #f0f0f0;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #555;
+}
+
+.storage-bar {
+    width: 100%;
+    height: 10px;
+    background-color: var(--c-border);
+    border-radius: 5px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.storage-progress {
+    height: 100%;
+    background: linear-gradient(to right, var(--c-primary), var(--c-primary-light));
+    width: 0%;
+    border-radius: 5px;
+    transition: width var(--t-slow);
+}
+
+.inventory-total {
+    text-align: right;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--c-primary-dark);
+    border-top: 2px solid var(--c-border);
+    margin-top: 15px;
+}
+
+/* ============================================================
+   5. 操作区
+   ============================================================ */
+
+.action-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.day-info {
+    font-size: 0.9rem;
+    color: var(--c-text-muted);
+    line-height: 1.5;
+}
+
+#next-day-tip {
+    color: var(--c-warning);
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+/* ============================================================
+   6. 通用弹窗（对话框）
+   ============================================================ */
+
+.dialog {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.dialog.show {
+    display: flex;
+}
+
+.dialog-content {
+    background-color: var(--c-panel-solid);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    max-width: 800px;
+    width: 90%;
+    max-height: min(85vh, 900px);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ============================================================
+   弹窗内滚动区
+   任何弹窗的“内容主体”都应该撑满剩余高度并独立滚动，
+   否则内容超出时会被 overflow:hidden 裁掉（商城道具曾因此不可用）。
+   ============================================================ */
+.dialog-content .scrollable {
+    max-height: none;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+#mall-items,
+#achievement-list,
+#skin-selector,
+#consign-inventory,
+#consign-list,
+#auction-body,
+#settings-body,
+#user-body,
+#avatar-body,
+#currency-body,
+.rules-body,
+#factory-dialog .factory-content-tabs {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+#factory-dialog .factory-content-tabs {
+    display: flex;
+    flex-direction: column;
+}
+
+#factory-dialog .tab-content {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: var(--header-bg);
+    color: var(--c-text-on-dark);
+    flex-shrink: 0;
+}
+
+.dialog-header h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--c-text-on-dark);
+    font-size: 2rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-round);
+    transition: all var(--t-base);
+    line-height: 1;
+}
+
+.close-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================================
+   7. 通知（右上角弹条）
+   ============================================================ */
+
+.notification {
+    animation: slideIn 0.3s ease-out;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    border-radius: var(--radius-md);
+    color: var(--c-text-on-dark);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    color: var(--c-text-on-dark);
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: auto;
+    line-height: 1;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to   { transform: translateX(0);    opacity: 1; }
+}
+
+@keyframes slideOut {
+    from { transform: translateX(0);    opacity: 1; }
+    to   { transform: translateX(100%); opacity: 0; }
+}
+
+#notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 300px;
+}
+
+/* ============================================================
+   8. 弹窗通用辅助（加工厂/商城里的小标签）
+   ============================================================ */
+
+.dialog-description {
+    color: var(--c-text-muted);
+    padding: 0 20px;
+    margin: 15px 0;
+    font-style: italic;
+}
+
+.tab-content {
+    display: none;
+    height: 100%;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* ============================================================
+   9. 移动端适配
+   ============================================================ */
+
+@media (max-width: 768px) {
+    .dialog-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+    .dialog-header h3 {
+        font-size: 1.2rem;
+    }
+    .btn {
+        padding: 10px 14px;
+        font-size: 0.9rem;
+    }
+}

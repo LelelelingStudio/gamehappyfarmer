@@ -1,0 +1,194 @@
+/* ============================================================
+   collection.css  —  成就展览馆 + 皮肤选择
+   ============================================================ */
+
+/* -------- 成就 -------- */
+.achievement-content {
+    max-width: 720px;
+}
+
+.achievement-progress {
+    padding: 14px 20px 10px;
+    color: var(--c-primary-darker);
+    font-weight: 600;
+}
+
+.achievement-tabs {
+    display: flex;
+    gap: 8px;
+    padding: 0 20px 12px;
+    border-bottom: 1px solid var(--c-border-light);
+    flex-wrap: wrap;
+}
+
+.ach-tab {
+    padding: 8px 16px;
+    border: 2px solid var(--c-border-primary);
+    border-radius: var(--radius-round);
+    background-color: var(--c-panel-solid);
+    color: var(--c-primary-darker);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--t-base);
+}
+
+.ach-tab:hover {
+    background-color: var(--c-primary-bg-light);
+}
+
+.ach-tab.active {
+    background: var(--btn-primary-bg);
+    border-color: transparent;
+    color: var(--c-text-on-dark);
+    box-shadow: var(--shadow-primary);
+}
+
+.achievement-list {
+    padding: 12px 20px 20px;
+}
+
+.achievement-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--c-border-light);
+    border-radius: var(--radius-sm);
+    transition: background-color var(--t-base);
+}
+
+.achievement-item:hover {
+    background-color: var(--c-primary-bg-light);
+}
+
+.achievement-item.locked {
+    opacity: 0.55;
+}
+
+.achievement-item.done {
+    background-color: var(--c-primary-bg);
+}
+
+.achievement-icon {
+    font-size: 2rem;
+    width: 44px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.achievement-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.achievement-name {
+    font-weight: bold;
+    color: var(--c-text);
+}
+
+.achievement-desc {
+    font-size: 0.85rem;
+    color: var(--c-text-muted);
+    line-height: 1.4;
+}
+
+.achievement-state {
+    flex-shrink: 0;
+    color: var(--c-success);
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+/* -------- 皮肤 -------- */
+.skin-content {
+    max-width: 700px;
+}
+
+.skin-description {
+    color: var(--c-text-muted);
+    padding: 0 20px;
+    margin: 14px 0 10px;
+    font-style: italic;
+    font-size: 0.95rem;
+}
+
+.skin-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 10px;
+    padding: 0 20px 12px;
+}
+
+.skin-item {
+    padding: 12px;
+    border: 2px solid var(--c-border);
+    border-radius: var(--radius-md);
+    background-color: var(--c-panel-alt);
+    cursor: pointer;
+    transition: all var(--t-base);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.skin-item:hover {
+    border-color: var(--c-primary-light);
+    transform: translateY(-2px);
+}
+
+.skin-item.active {
+    border-color: var(--c-primary);
+    background-color: var(--c-primary-bg-light);
+    box-shadow: var(--shadow-primary);
+}
+
+.skin-item.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.skin-item-main {
+    min-width: 0;
+}
+
+.skin-item-name {
+    font-weight: bold;
+    color: var(--c-text);
+}
+
+.skin-item-desc {
+    font-size: 0.8rem;
+    color: var(--c-text-muted);
+    line-height: 1.35;
+}
+
+.skin-item-level {
+    font-size: 0.75rem;
+    color: var(--c-text-light);
+}
+
+.skin-item-state {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--c-primary-dark);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.skin-hint {
+    padding: 0 20px 18px;
+    color: var(--c-text-light);
+    font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+    .achievement-list,
+    .skin-selector {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+}

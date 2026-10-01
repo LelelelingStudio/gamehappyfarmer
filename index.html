@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="爱种地的农民 - 休闲农场经营游戏">
+    <title>爱种地的农民</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%B1%3C/text%3E%3C/svg%3E">
+
+    <link rel="stylesheet" href="css/reset.css?v=1.0.5">
+    <link rel="stylesheet" href="css/variables.css?v=1.0.5">
+    <link rel="stylesheet" href="css/layout.css?v=1.0.5">
+    <link rel="stylesheet" href="css/components.css?v=1.0.5">
+    <link rel="stylesheet" href="css/farm.css?v=1.0.5">
+    <link rel="stylesheet" href="css/shop.css?v=1.0.5">
+    <link rel="stylesheet" href="css/factory.css?v=1.0.5">
+    <link rel="stylesheet" href="css/merchant.css?v=1.0.5">
+    <link rel="stylesheet" href="css/modal.css?v=1.0.5">
+    <link rel="stylesheet" href="css/ticker.css?v=1.0.5">
+    <link rel="stylesheet" href="css/settings.css?v=1.0.5">
+    <link rel="stylesheet" href="css/effects.css?v=1.0.5">
+    <link rel="stylesheet" href="css/drawer.css?v=1.0.5">
+    <link rel="stylesheet" href="css/mall.css?v=1.0.5">
+    <link rel="stylesheet" href="css/market.css?v=1.0.5">
+    <link rel="stylesheet" href="css/collection.css?v=1.0.5">
+    <link rel="stylesheet" href="css/tillgame.css?v=1.0.5">
+    <link rel="stylesheet" href="css/mobile.css?v=1.0.5">
+    <link rel="stylesheet" href="css/main.css?v=1.0.5">
+</head>
+<body>
+
+<div id="loading-screen">
+    <div class="loading-title">🌱 <span data-i18n="app.title"></span></div>
+    <div class="loading-spinner"></div>
+    <div id="loading-status" class="loading-status" data-i18n="loader.stageHtml"></div>
+    <div class="loading-progress-bar">
+        <div id="loading-progress-fill" class="loading-progress-fill"></div>
+    </div>
+    <div id="loading-percent" class="loading-percent">0.0%</div>
+    <div class="loading-version">v1.0.5</div>
+</div>
+
+<!-- 切换语言时的过渡遮罩（刷新后自动续玩，不再回到开始页） -->
+<div id="lang-switch-overlay">
+    <div class="loading-spinner"></div>
+    <div data-i18n="settings.switchingLanguage"></div>
+</div>
+
+<!-- 起始选择弹窗（可继续缓存 / 新游戏 / 导入存档） -->
+
+<!-- ============================================================
+     加载兜底（内联，不依赖任何外部 JS）
+     无论后面的脚本是否报错、网络多慢，最多 6 秒一定放行，绝不绿屏。
+     ============================================================ -->
+<script>
+(function () {
+    var FAILSAFE_MS = 6000;
+    var done = false;
+    function reveal() {
+        if (done) return;
+        done = true;
+        try {
+            var el = document.getElementById('loading-screen');
+            if (el) {
+                el.classList.add('hide');
+                setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 700);
+            }
+            /* 让页面可见（main.css 默认 html{visibility:hidden}） */
+            document.documentElement.classList.add('js-loaded');
+            /* 如果游戏主流程没起来，至少把起始弹窗露出来，别让玩家看着一片绿 */
+            var ss = document.getElementById('start-screen');
+            var started = document.body && document.body.classList.contains('game-started');
+            if (ss && !started && !ss.classList.contains('show') && (window.__startBound || window.__bootstrapped)) {
+                ss.classList.add('show');
+            }
+        } catch (e) { /* 兜底本身绝不能抛错 */ }
+    }
+    window.__failsafeReveal = reveal;
+    setTimeout(reveal, FAILSAFE_MS);
+    /* 任何脚本错误都提前放行 */
+    window.addEventListener('error', function () { setTimeout(reveal, 1200); }, true);
+})();
+</script>
+
+<div id="start-screen" class="dialog start-dialog">
+    <div class="dialog-content start-card">
+        <div class="dialog-header">
+            <h3>🌱 <span data-i18n="app.title"></span></h3>
+        </div>
+        <div class="start-body">
+            <p class="start-subtitle" data-i18n="ui.startSubtitle"></p>
+            <p class="publisher-credit" data-i18n="app.publisher" data-params='{"studio":"LelelelingStudio","brand":"Lelelegame"}'></p>
+
+            <div id="start-cache-hint" class="start-cache-hint" hidden></div>
+
+            <div class="start-actions">
+                <button id="start-continue-btn" class="btn btn-primary btn-large" data-i18n="ui.continueFromCache" hidden></button>
+                <button id="start-new-game-btn" class="btn btn-large" data-i18n="ui.startNewGame"></button>
+                <button id="import-save-btn" class="btn btn-large" data-i18n="ui.importSave"></button>
+            </div>
+
+            <div class="start-meta-actions">
+                <button id="start-rules-btn" class="btn btn-link" data-i18n="app.viewRules" data-i18n-tip="ui.tip.viewRulesBtn"></button>
+                <button id="start-privacy-btn" class="btn btn-link" data-i18n="app.privacyPolicy" data-i18n-tip="ui.tip.privacyBtn"></button>
+                <button id="start-terms-btn" class="btn btn-link" data-i18n="app.termsOfService" data-i18n-tip="ui.tip.termsBtn"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <header>
+        <h1>🌱 <span data-i18n="app.title"></span></h1>
+        <div class="game-stats">
+            <div class="stat stat-clickable" id="gold-stat" data-i18n-tip="ui.tip.goldLabel"><span class="stat-label" data-i18n="ui.goldLabel"></span><span id="gold" class="stat-value">300</span></div>
+            <div class="stat"><span class="stat-label" data-i18n="ui.levelLabel"></span><span id="level" class="stat-value">1</span></div>
+            <div class="stat"><span class="stat-label" data-i18n="ui.expLabel"></span><span id="exp" class="stat-value">0/100</span></div>
+            <div class="stat"><span class="stat-label" data-i18n="ui.dayLabel"></span><span id="day" class="stat-value">1</span></div>
+            <div class="stat"><span class="stat-label" data-i18n="ui.storageLabel"></span><span id="storage-stat" class="stat-value">0/50</span></div>
+        </div>
+        <div class="header-actions">
+            <button id="log-btn" class="header-icon-btn" data-i18n-title="ui.viewLog" data-i18n-tip="ui.tip.logBtn" title="">📋</button>
+            <button id="save-btn" class="header-icon-btn" data-i18n-title="ui.saveNow" data-i18n-tip="ui.tip.saveBtn" title="">💾</button>
+            <button id="sound-btn" class="header-icon-btn" data-i18n-title="ui.soundToggle" data-i18n-tip="ui.tip.soundBtn" title=""><span id="sound-icon">🔊</span></button>
+            <button id="settings-btn" class="header-icon-btn" data-i18n-title="ui.settings" data-i18n-tip="ui.tip.settingsBtn" title="">⚙️</button>
+            <button id="user-btn" class="header-icon-btn user-avatar-btn" data-i18n-title="ui.userCenter" data-i18n-tip="ui.tip.userBtn" title=""><span id="user-avatar-display">👤</span></button>
+        </div>
+        <div class="time-control">
+            <div class="next-day-timer">
+                <span data-i18n="ui.nextDayLabel"></span>
+                <div class="timer-bar"><div id="timer-progress" class="timer-progress"></div></div>
+                <span id="timer-text" data-i18n="game.ready"></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="game-area">
+        <div class="main-game">
+            <div class="farm-section">
+                <h2>🚜 <span data-i18n="ui.section.farmland"></span></h2>
+                <div class="farm-controls">
+                    <button id="buy-land-btn" class="btn" data-i18n-tip="ui.tip.buyLandBtn">🔲 <span data-i18n="ui.buyLand"></span></button>
+                    <button id="fertilize-all-btn" class="btn" data-i18n-tip="ui.tip.fertilizeAllBtn">🌿 <span data-i18n="ui.fertilizeAll"></span></button>
+                    <button id="water-all-btn" class="btn" data-i18n-tip="ui.tip.waterAllBtn">💧 <span data-i18n="ui.waterAll"></span> <span data-i18n="ui.waterAllCost" data-params='{"cost":20}'></span></button>
+                    <button id="harvest-all-btn" class="btn" data-i18n-tip="ui.tip.harvestAllBtn">🧺 <span data-i18n="ui.harvestAll"></span></button>
+                    <button id="till-all-btn" class="btn" data-i18n-tip="ui.tip.tillAllBtn"><span id="till-all-icon">🪓</span> <span data-i18n="ui.tillAll"></span></button>
+                    <button id="mall-btn" class="btn btn-primary" data-i18n-tip="ui.tip.mallBtn">🛒 <span data-i18n="ui.mall"></span></button>
+                    <button id="factory-btn" class="btn" data-i18n-tip="ui.tip.factoryBtn">🏭 <span data-i18n="ui.factory"></span></button>
+                    <button id="consign-btn" class="btn" data-i18n-tip="ui.tip.consignBtn">📦 <span data-i18n="ui.consign"></span></button>
+                    <button id="auction-btn" class="btn" data-i18n-tip="ui.tip.auctionBtn">🔨 <span data-i18n="ui.auction"></span></button>
+                    <button id="upgrade-storage-btn" class="btn" data-i18n-tip="ui.tip.upgradeStorageBtn">🏬 <span data-i18n="ui.upgradeStorage"></span> <span data-i18n="ui.upgradeStorageCost" data-params='{"cost":200}'></span></button>
+                    <button id="skin-btn" class="btn" data-i18n-tip="ui.tip.skinBtn">🎨 <span data-i18n="ui.changeSkin"></span></button>
+                </div>
+                <div id="farmland" class="farmland"></div>
+                <div class="farm-info">
+                    <p><span data-i18n="ui.ownedPlotsText"></span> <span id="owned-plots">6</span> <span data-i18n="ui.ownedPlotsSuffix"></span></p>
+                    <div class="season-display">
+                        <span><span data-i18n="ui.seasonLabel"></span>: <span id="season">春季</span></span>
+                        <span><span data-i18n="ui.weatherLabel"></span>: <span id="weather">晴朗</span></span>
+                        <span><span data-i18n="ui.merchantVisitLabel"></span>: <span id="merchant-countdown">?</span><span data-i18n="ui.daysAfter"></span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="log-section" class="events-log">
+                <h3>📋 <span data-i18n="ui.logTitle"></span></h3>
+                <div class="log-controls">
+                    <button id="clear-log-btn" class="btn-small" data-i18n="ui.clearLog"></button>
+                    <div class="event-frequency"><span data-i18n="ui.eventRate"></span>: <span id="event-rate">2.0x</span></div>
+                </div>
+                <div id="log" class="log-content">
+                    <div class="log-entry"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="side-panel" class="side-panel">
+            <div class="shop-section">
+                <h2>🌱 <span data-i18n="ui.section.seedStore"></span></h2>
+                <div class="crop-filter">
+                    <button class="filter-btn active" data-filter="all" data-i18n="common.all"></button>
+                    <button class="filter-btn" data-filter="vegetable" data-i18n="cropCategory.vegetable"></button>
+                    <button class="filter-btn" data-filter="fruit" data-i18n="cropCategory.fruit"></button>
+                    <button class="filter-btn" data-filter="grain" data-i18n="cropCategory.grain"></button>
+                    <button class="filter-btn" data-filter="medicine" data-i18n="cropCategory.medicine"></button>
+                    <button class="filter-btn" data-filter="flower" data-i18n="cropCategory.flower"></button>
+                    <button class="filter-btn" data-filter="tropical" data-i18n="cropCategory.tropical"></button>
+                    <button class="filter-btn" data-filter="mushroom" data-i18n="cropCategory.mushroom"></button>
+                    <button class="filter-btn" data-filter="spice" data-i18n="cropCategory.spice"></button>
+                    <button class="filter-btn" data-filter="magic" data-i18n="cropCategory.magic"></button>
+                    <button class="filter-btn" data-filter="legend" data-i18n="cropCategory.legend"></button>
+                </div>
+                <div id="crops-list" class="crops-list scrollable"></div>
+            </div>
+
+            <div class="inventory-section">
+                <h2>🧺 <span data-i18n="ui.section.inventory"></span></h2>
+                <div class="storage-info">
+                    <span data-i18n="ui.capacity"></span>: <span id="storage-used">0</span>/<span id="storage-capacity">50</span>
+                    <div class="storage-bar"><div id="storage-progress" class="storage-progress" style="width:0%"></div></div>
+                </div>
+                <div id="inventory" class="inventory scrollable"></div>
+                <div class="inventory-total"><span data-i18n="ui.totalValue"></span>: <span id="inventory-value">0</span> <span data-i18n="ui.currencySymbol"></span></div>
+            </div>
+
+            <div class="action-section">
+                <h2>▶️ <span data-i18n="ui.section.action"></span></h2>
+                <div class="action-controls">
+                    <button id="next-day-btn" class="btn btn-primary btn-large" data-i18n-tip="ui.tip.nextDayBtn">⏩ <span id="next-day-text" data-i18n="ui.nextDay"></span></button>
+                    <div class="day-info">
+                        <p data-i18n="ui.dayTip"></p>
+                        <p id="next-day-tip" data-i18n="ui.nextDayTip" data-params='{"weather":"晴朗"}'></p>
+                    </div>
+                    <button id="merchant-hub-btn" class="btn btn-large" data-i18n-tip="ui.tip.merchantHubBtn">🧑‍💼 <span data-i18n="ui.merchantHub"></span></button>
+                    <button id="quick-sell-btn" class="btn btn-large" data-i18n-tip="ui.tip.quickSellBtn">💸 <span data-i18n="ui.quickSell"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav id="mobile-toolbar" class="mobile-toolbar">
+    <button class="mobile-tool-btn active" data-target="farm" data-i18n-tip="ui.tip.mobileFarmBtn">🚜<span data-i18n="ui.mobileFarm"></span></button>
+    <button class="mobile-tool-btn" data-target="shop" data-i18n-tip="ui.tip.mobileShopBtn">🌱<span data-i18n="ui.mobileShop"></span></button>
+    <button class="mobile-tool-btn" data-target="inventory" data-i18n-tip="ui.tip.mobileInventoryBtn">🧺<span data-i18n="ui.mobileInventory"></span></button>
+    <button class="mobile-tool-btn" data-target="factory" data-i18n-tip="ui.tip.mobileFactoryBtn">🏭<span data-i18n="ui.mobileFactory"></span></button>
+    <button class="mobile-tool-btn" data-target="settings" data-i18n-tip="ui.tip.mobileSettingsBtn">⚙️<span data-i18n="ui.mobileSettings"></span></button>
+</nav>
+
+<div id="ticker-container"></div>
+<div id="drawer-overlay"></div>
+
+<!-- 按钮右键提示浮层（由 rightClickTip.js 接管） -->
+<div id="btn-tip-popup" class="btn-tip-popup" role="tooltip" aria-hidden="true"></div>
+
+<!-- 商城 -->
+<div id="mall-dialog" class="dialog">
+    <div class="dialog-content mall-content">
+        <div class="dialog-header">
+            <h3>💎 <span data-i18n="ui.mallDialogTitle"></span></h3>
+            <button class="close-btn" data-close="mall-dialog">&times;</button>
+        </div>
+        <p class="mall-description" data-i18n="ui.mallDescription"></p>
+        <div class="mall-tabs">
+            <button class="mall-tab active" data-cat="low" data-i18n="ui.mallTabs.low"></button>
+            <button class="mall-tab" data-cat="normal" data-i18n="ui.mallTabs.normal"></button>
+            <button class="mall-tab" data-cat="mid" data-i18n="ui.mallTabs.mid"></button>
+            <button class="mall-tab" data-cat="high" data-i18n="ui.mallTabs.high"></button>
+            <button class="mall-tab" data-cat="other" data-i18n="ui.mallTabs.other"></button>
+        </div>
+        <div class="mall-items" id="mall-items"></div>
+    </div>
+</div>
+
+<!-- 加工厂 -->
+<div id="factory-dialog" class="dialog">
+    <div class="dialog-content factory-content">
+        <div class="dialog-header">
+            <h3>🏭 <span data-i18n="ui.factoryDialogTitle"></span></h3>
+            <button class="close-btn" data-close="factory-dialog">&times;</button>
+        </div>
+        <p class="factory-description" data-i18n="ui.factoryDescription"></p>
+        <div class="factory-search-box">
+            <input type="text" id="factory-search-input" data-i18n-placeholder="ui.factorySearchPlaceholder" placeholder="" />
+            <div class="level-filter-group" id="factory-level-filters"></div>
+        </div>
+        <div class="factory-tabs">
+            <button class="factory-tab active" data-tab="available" data-i18n="ui.factoryTabAvailable"></button>
+            <button class="factory-tab" data-tab="processing" data-i18n="ui.factoryTabProcessing"></button>
+            <button class="factory-tab" data-tab="completed" data-i18n="ui.factoryTabCompleted"></button>
+        </div>
+        <div class="factory-content-tabs">
+            <div id="available-products" class="tab-content active scrollable"></div>
+            <div id="processing-products" class="tab-content scrollable"></div>
+            <div id="completed-products" class="tab-content scrollable"></div>
+        </div>
+    </div>
+</div>
+
+<!-- 商人 -->
+<div id="merchant-dialog" class="dialog">
+    <div class="dialog-content merchant-content">
+        <div class="dialog-header">
+            <h3>👔 <span data-i18n="ui.merchantDialogTitle"></span></h3>
+            <button class="close-btn" data-close="merchant-dialog">&times;</button>
+        </div>
+        <div class="merchant-trade-body">
+            <div class="merchant-trade-left">
+                <div id="merchant-avatar" class="merchant-avatar">🧒</div>
+                <div id="merchant-name" class="merchant-name"></div>
+                <div id="merchant-tagline" class="merchant-tagline"></div>
+                <p class="merchant-description" id="merchant-description"></p>
+                <p class="merchant-info"><span data-i18n="ui.merchantLeavePrefix"></span> <span id="merchant-leave-time" data-i18n="ui.merchantLeaveTime"></span> <span data-i18n="ui.merchantLeaveSuffix"></span></p>
+            </div>
+            <div class="merchant-trade-right">
+                <div class="merchant-trade-title" data-i18n="ui.merchantSellCenter"></div>
+                <div class="merchant-items scrollable" id="merchant-items"></div>
+            </div>
+        </div>
+        <div class="merchant-total">
+            <div><span data-i18n="ui.merchantTotalPrefix"></span>: <span id="merchant-total-value">0</span> <span data-i18n="ui.currencySymbol"></span></div>
+            <button id="sell-to-merchant-btn" class="btn btn-primary btn-large" data-i18n="ui.sellSelectedItems"></button>
+        </div>
+    </div>
+</div>
+
+<!-- 皮肤 -->
+<div id="skin-dialog" class="dialog">
+    <div class="dialog-content skin-content">
+        <div class="dialog-header">
+            <h3>🎨 <span data-i18n="ui.skinDialogTitle"></span></h3>
+            <button class="close-btn" data-close="skin-dialog">&times;</button>
+        </div>
+        <p class="skin-description" data-i18n="ui.skinDescription" data-params='{"level":1}'></p>
+        <div class="skin-selector" id="skin-selector"></div>
+        <div class="skin-hint"><p data-i18n="ui.skinHint"></p></div>
+    </div>
+</div>
+
+<!-- 寄卖 -->
+<div id="consign-dialog" class="dialog">
+    <div class="dialog-content consign-content">
+        <div class="dialog-header">
+            <h3>📦 <span data-i18n="ui.consignDialogTitle"></span></h3>
+            <button class="close-btn" data-close="consign-dialog">&times;</button>
+        </div>
+        <div class="consign-body">
+            <div class="consign-left">
+                <h4 data-i18n="ui.consignChoose"></h4>
+                <div id="consign-inventory" class="scrollable"></div>
+            </div>
+            <div class="consign-right">
+                <h4><span data-i18n="ui.consignMy"></span>（<span id="consign-count">0</span>/<span id="consign-max">3</span>）</h4>
+                <div id="consign-list" class="scrollable"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 拍卖 -->
+<div id="auction-dialog" class="dialog">
+    <div class="dialog-content auction-content">
+        <div class="dialog-header">
+            <h3>🔨 <span data-i18n="ui.auctionDialogTitle"></span></h3>
+            <button class="close-btn" data-close="auction-dialog">&times;</button>
+        </div>
+        <p class="auction-description" data-i18n="ui.auctionDescription"></p>
+        <div id="auction-body"></div>
+    </div>
+</div>
+
+<!-- 成就 -->
+<div id="achievement-dialog" class="dialog">
+    <div class="dialog-content achievement-content">
+        <div class="dialog-header">
+            <h3>🏆 <span data-i18n="ui.achievementDialogTitle"></span></h3>
+            <button class="close-btn" data-close="achievement-dialog">&times;</button>
+        </div>
+        <p class="achievement-progress"><span data-i18n="ui.achievementProgressText"></span> <span id="ach-unlocked">0</span> / <span id="ach-total">150</span></p>
+        <div class="achievement-tabs">
+            <button class="ach-tab active" data-tab="unlocked" data-i18n="ui.achievementTabs.unlocked"></button>
+            <button class="ach-tab" data-tab="locked" data-i18n="ui.achievementTabs.locked"></button>
+            <button class="ach-tab" data-tab="all" data-i18n="ui.achievementTabs.all"></button>
+        </div>
+        <div id="achievement-list" class="achievement-list scrollable"></div>
+    </div>
+</div>
+
+<!-- 设置 -->
+<div id="settings-dialog" class="dialog">
+    <div class="dialog-content settings-content">
+        <div class="dialog-header">
+            <h3>⚙️ <span data-i18n="ui.settingsDialogTitle"></span></h3>
+            <button class="close-btn" data-close="settings-dialog">&times;</button>
+        </div>
+        <div class="settings-body scrollable" id="settings-body"></div>
+    </div>
+</div>
+
+<!-- 用户中心 -->
+<div id="user-dialog" class="dialog">
+    <div class="dialog-content user-content">
+        <div class="dialog-header">
+            <h3>👤 <span data-i18n="ui.userDialogTitle"></span></h3>
+            <button class="close-btn" data-close="user-dialog">&times;</button>
+        </div>
+        <div class="user-body scrollable" id="user-body"></div>
+    </div>
+</div>
+
+<!-- 头像选择（素材库 180 张 + emoji，内部可滚动） -->
+<div id="avatar-dialog" class="dialog">
+    <div class="dialog-content avatar-content">
+        <div class="dialog-header">
+            <h3>🖼️ <span data-i18n="user.avatarLibrary"></span></h3>
+            <button class="close-btn" data-close="avatar-dialog">&times;</button>
+        </div>
+        <div id="avatar-body" class="scrollable"></div>
+    </div>
+</div>
+
+<!-- 商人板块 -->
+<div id="merchant-hub-dialog" class="dialog">
+    <div class="dialog-content merchant-hub-content">
+        <div class="dialog-header">
+            <h3>🧑‍💼 <span data-i18n="ui.merchantHubTitle"></span></h3>
+            <button class="close-btn" data-close="merchant-hub-dialog">&times;</button>
+        </div>
+        <p class="merchant-hub-countdown" id="merchant-hub-countdown"></p>
+        <div class="merchant-hub-list scrollable" id="merchant-hub-list"></div>
+    </div>
+</div>
+
+<!-- 低价甩卖 -->
+<div id="quick-sell-dialog" class="dialog">
+    <div class="dialog-content quick-sell-content">
+        <div class="dialog-header">
+            <h3>💸 <span data-i18n="ui.quickSellTitle"></span></h3>
+            <button class="close-btn" data-close="quick-sell-dialog">&times;</button>
+        </div>
+        <p class="quick-sell-hint" id="quick-sell-hint"></p>
+        <div class="quick-sell-list scrollable" id="quick-sell-list"></div>
+        <div class="quick-sell-footer">
+            <div><span data-i18n="ui.merchantTotalPrefix"></span>: <span id="quick-sell-total">0</span> <span data-i18n="ui.currencySymbol"></span></div>
+            <button class="btn btn-primary btn-large" id="quick-sell-confirm" data-i18n="ui.quickSellConfirm"></button>
+        </div>
+    </div>
+</div>
+
+<!-- 二手市场 -->
+<div id="secondhand-dialog" class="dialog">
+    <div class="dialog-content secondhand-content">
+        <div class="dialog-header">
+            <h3>♻️ <span data-i18n="ui.secondHandTitle"></span></h3>
+            <button class="close-btn" data-close="secondhand-dialog">&times;</button>
+        </div>
+        <p class="second-hand-hint" data-i18n="ui.secondHandHint"></p>
+        <div class="second-hand-list scrollable" id="second-hand-list"></div>
+    </div>
+</div>
+
+<!-- 货币兑换 -->
+<div id="currency-dialog" class="dialog">
+    <div class="dialog-content currency-content">
+        <div class="dialog-header">
+            <h3>💱 <span data-i18n="ui.currencyDialogTitle"></span></h3>
+            <button class="close-btn" data-close="currency-dialog">&times;</button>
+        </div>
+        <div id="currency-body"></div>
+    </div>
+</div>
+
+<!-- 规则文档 -->
+<div id="rules-dialog" class="dialog">
+    <div class="dialog-content rules-content">
+        <div class="dialog-header">
+            <h3>📖 <span data-i18n="ui.rulesDialogTitle"></span></h3>
+            <button class="close-btn" data-close="rules-dialog">&times;</button>
+        </div>
+        <div id="rules-body" class="rules-body scrollable"></div>
+    </div>
+</div>
+
+<!-- 隐私政策 -->
+<div id="privacy-dialog" class="dialog">
+    <div class="dialog-content rules-content">
+        <div class="dialog-header">
+            <h3>🔒 <span data-i18n="app.privacyPolicy"></span></h3>
+            <button class="close-btn" data-close="privacy-dialog">&times;</button>
+        </div>
+        <div id="privacy-body" class="rules-body scrollable"></div>
+    </div>
+</div>
+
+<!-- 服务条款 -->
+<div id="terms-dialog" class="dialog">
+    <div class="dialog-content rules-content">
+        <div class="dialog-header">
+            <h3>📄 <span data-i18n="app.termsOfService"></span></h3>
+            <button class="close-btn" data-close="terms-dialog">&times;</button>
+        </div>
+        <div id="terms-body" class="rules-body scrollable"></div>
+    </div>
+</div>
+
+<!-- 翻土小游戏 -->
+<div id="till-game-dialog" class="dialog">
+    <div class="dialog-content till-game-content">
+        <div class="dialog-header">
+            <h3>🪓 <span data-i18n="ui.tillDialogTitle"></span></h3>
+            <button class="close-btn" data-close="till-game-dialog">&times;</button>
+        </div>
+        <div class="till-game-body">
+            <p class="till-game-hint" data-i18n="ui.tillHint"></p>
+            <div class="till-game-stage">
+                <canvas id="till-canvas" width="300" height="300"></canvas>
+                <div id="till-progress-text" class="till-progress-text" data-i18n="ui.tillProgress" data-params='{"current":0,"total":3}'></div>
+            </div>
+            <div class="till-progress-bar">
+                <div id="till-progress-fill" class="till-progress-fill"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- JS 加载顺序（严格 8 层）                                       -->
+<!--   * 数据文件（langdata/*/{constants,crops_*,factoryproducts*,mallItems,skins,achievements,events,merchants,fertilizers}）  -->
+<!--     不在此处硬编码，由 languagecontrol.js 根据存档 / 浏览器语言按需动态加载。   -->
+<!--   * ui 语言包始终两个一起加载，供 languageControl.setLanguage() 实时切换。     -->
+<!-- ============================================================ -->
+
+<!-- 1. UI 语言包（两个都常驻，t() 会按当前 locale 选包）-->
+<script src="langdata/ch/ui-ch.js?v=1.0.5"></script>
+<script src="langdata/en/ui-en.js?v=1.0.5"></script>
+<script src="langdata/ch/messages-ch.js?v=1.0.5"></script>
+<script src="langdata/en/messages-en.js?v=1.0.5"></script>
+
+<!-- 1.5 语言无关常量（必须在 state.js 之前同步加载；不然 gameState 初始化时 INITIAL_GOLD 等会 TDZ） -->
+<script src="langdata/constants.js?v=1.0.5"></script>
+
+<!-- 资源清单（由 tools/build-manifest.js 生成） -->
+<script src="assets/manifest.js?v=1.0.5"></script>
+
+<!-- 1.6 法定文档（规则 / 隐私政策 / 服务条款）：两个语言都常驻，JS 内联形式保证 file:// 与离线可用 -->
+<script src="langdata/ch/documents-ch.js?v=1.0.5"></script>
+<script src="langdata/en/documents-en.js?v=1.0.5"></script>
+
+<!-- 2. 核心层 -->
+<script src="js/core/utils.js?v=1.0.5"></script>
+<script src="js/core/eventBus.js?v=1.0.5"></script>
+<script src="js/core/state.js?v=1.0.5"></script>
+<script src="js/core/modal.js?v=1.0.5"></script>
+<script src="js/core/save.js?v=1.0.5"></script>
+<script src="js/core/audio.js?v=1.0.5"></script>
+<script src="js/core/notify.js?v=1.0.5"></script>
+<script src="js/core/layout.js?v=1.0.5"></script>
+
+<!-- 3. 系统层 -->
+<script src="js/systems/weatherSystem.js?v=1.0.5"></script>
+<script src="js/systems/currencySystem.js?v=1.0.5"></script>
+<script src="js/systems/economySystem.js?v=1.0.5"></script>
+<script src="js/systems/farmSystem.js?v=1.0.5"></script>
+        <script src="js/systems/factoryData.js?v=1.0.5"></script>
+        <script src="js/systems/factorySystem.js?v=1.0.5"></script>
+<script src="js/systems/itemEffectSystem.js?v=1.0.5"></script>
+<script src="js/systems/tradeSystem.js?v=1.0.5"></script>
+<script src="js/systems/avatarSystem.js?v=1.0.5"></script>
+<script src="js/systems/merchantSystem.js?v=1.0.5"></script>
+<script src="js/systems/consignmentSystem.js?v=1.0.5"></script>
+<script src="js/systems/auctionSystem.js?v=1.0.5"></script>
+<script src="js/systems/achievementSystem.js?v=1.0.5"></script>
+<script src="js/systems/questSystem.js?v=1.0.5"></script>
+<script src="js/systems/eventSystem.js?v=1.0.5"></script>
+<script src="js/systems/skinSystem.js?v=1.0.5"></script>
+
+<!-- 4. UI 层 -->
+<script src="js/ui/notification.js?v=1.0.5"></script>
+<script src="js/ui/ticker.js?v=1.0.5"></script>
+<script src="js/ui/effects.js?v=1.0.5"></script>
+<script src="js/ui/logUI.js?v=1.0.5"></script>
+<script src="js/ui/hudUI.js?v=1.0.5"></script>
+<script src="js/ui/farmUI.js?v=1.0.5"></script>
+<script src="js/ui/shopUI.js?v=1.0.5"></script>
+<script src="js/ui/inventoryUI.js?v=1.0.5"></script>
+<script src="js/ui/factoryUI.js?v=1.0.5"></script>
+<script src="js/ui/merchantUI.js?v=1.0.5"></script>
+<script src="js/ui/mallUI.js?v=1.0.5"></script>
+<script src="js/ui/tradeUI.js?v=1.0.5"></script>
+<script src="js/ui/skinUI.js?v=1.0.5"></script>
+<script src="js/ui/consignmentUI.js?v=1.0.5"></script>
+<script src="js/ui/auctionUI.js?v=1.0.5"></script>
+<script src="js/ui/achievementUI.js?v=1.0.5"></script>
+<script src="js/ui/settingsUI.js?v=1.0.5"></script>
+<script src="js/ui/ui.js?v=1.0.5"></script>
+
+<!-- 5. 语言控制 + 数据动态加载（languagecontrol.js 启动后立即异步按 locale 加载数据文件并暴露 __dataReadyPromise）-->
+<script src="languagecontrol.js"></script>
+
+<!-- 5.5 按钮右键提示 / 货币弹窗 / 隐私与条款弹窗（独立模块）-->
+<script src="js/ui/rightClickTip.js?v=1.0.5"></script>
+<script src="js/ui/currencyDialog.js?v=1.0.5"></script>
+<script src="js/ui/legalDialog.js?v=1.0.5"></script>
+
+<!-- 6. 入口（main.js bootstrap 会 await __dataReadyPromise）-->
+<script src="js/core/loader.js?v=1.0.5"></script>
+<script src="js/main.js?v=1.0.5"></script>
+
+</body>
+</html>

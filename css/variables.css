@@ -1,0 +1,111 @@
+/* ============================================================
+   variables.css  —  全局 CSS 变量
+   所有颜色 / 尺寸 / 阴影都在这里定义
+   以后换皮肤只需要改这里（或由 JS 动态 setProperty）
+   ============================================================ */
+
+:root {
+
+    /* -------- 主题色（默认：绿色农场）-------- */
+    --c-primary:          #4caf50;
+    --c-primary-dark:     #388e3c;
+    --c-primary-darker:   #1b5e20;
+    --c-primary-light:    #81c784;
+    --c-primary-lighter:  #c8e6c9;
+    --c-primary-bg:       #f1f8e9;
+    --c-primary-bg-light: #e8f5e9;
+
+    /* -------- 强调色 -------- */
+    --c-accent:           #ff9800;
+    --c-accent-dark:      #f57c00;
+    --c-gold:             #ffeb3b;
+    --c-danger:           #f44336;
+    --c-warning:          #ff9800;
+    --c-info:             #2196f3;
+    --c-success:          #4caf50;
+    --c-magic:            #9c27b0;
+    --c-magic-dark:       #7b1fa2;
+
+    /* -------- 文字色 -------- */
+    --c-text:             #333333;
+    --c-text-muted:       #666666;
+    --c-text-light:       #888888;
+    --c-text-on-dark:     #ffffff;
+
+    /* -------- 背景色 -------- */
+    --c-bg-gradient:      linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%);
+    --c-bg-overlay-1:     radial-gradient(circle at 20% 80%, rgba(255,255,255,0.10) 0%, transparent 50%);
+    --c-bg-overlay-2:     radial-gradient(circle at 80% 20%, rgba(255,255,255,0.10) 0%, transparent 50%);
+    --c-panel:            rgba(255, 255, 255, 0.95);
+    --c-panel-solid:      #ffffff;
+    --c-panel-alt:        #f9f9f9;
+    --c-panel-grey:       #f5f5f5;
+
+    /* -------- 边框 -------- */
+    --c-border:           #e0e0e0;
+    --c-border-light:     #eeeeee;
+    --c-border-primary:   #c5e1a5;
+    --c-border-success:   #a5d6a7;
+
+    /* -------- 农田（皮肤会改）-------- */
+    --plot-bg-from:       #c5e1a5;
+    --plot-bg-to:         #aed581;
+    --plot-border:        #81c784;
+    --plot-empty-from:    #d7ccc8;
+    --plot-empty-to:      #bcaaa4;
+    --plot-empty-border:  #8d6e63;
+    --plot-locked-from:   #b0bec5;
+    --plot-locked-to:     #90a4ae;
+    --plot-locked-border: #78909c;
+    --farmland-bg:        #e8f5e9;
+    --farmland-border:    #a5d6a7;
+
+    /* -------- 粒子 -------- */
+    --particle-color:     rgba(76, 175, 80, 0.8);
+
+    /* -------- 尺寸 / 圆角 -------- */
+    --radius-sm:          6px;
+    --radius-md:          10px;
+    --radius-lg:          15px;
+    --radius-xl:          20px;
+    --radius-round:       50%;
+
+    --space-xs:           5px;
+    --space-sm:           10px;
+    --space-md:           15px;
+    --space-lg:           20px;
+    --space-xl:           25px;
+
+    /* -------- 阴影 -------- */
+    --shadow-sm:          0 2px 5px rgba(0, 0, 0, 0.05);
+    --shadow-md:          0 5px 15px rgba(0, 0, 0, 0.08);
+    --shadow-lg:          0 10px 25px rgba(0, 0, 0, 0.15);
+    --shadow-xl:          0 20px 40px rgba(0, 0, 0, 0.20);
+    --shadow-primary:     0 4px 10px rgba(76, 175, 80, 0.30);
+    --shadow-primary-lg:  0 6px 15px rgba(76, 175, 80, 0.40);
+    --shadow-accent:      0 4px 10px rgba(255, 152, 0, 0.30);
+    --shadow-accent-lg:   0 6px 15px rgba(255, 152, 0, 0.40);
+
+    /* -------- 动画时长 -------- */
+    --t-fast:             0.2s;
+    --t-base:             0.3s;
+    --t-slow:             0.5s;
+
+    /* -------- 按钮渐变 -------- */
+    --btn-primary-bg:         linear-gradient(to bottom, #4caf50, #388e3c);
+    --btn-primary-bg-hover:   linear-gradient(to bottom, #66bb6a, #43a047);
+    --btn-accent-bg:          linear-gradient(to bottom, #ff9800, #f57c00);
+    --btn-accent-bg-hover:    linear-gradient(to bottom, #ffb74d, #ff9800);
+    --btn-magic-bg:           linear-gradient(to bottom, #9c27b0, #7b1fa2);
+    --btn-magic-bg-hover:     linear-gradient(to bottom, #ba68c8, #9c27b0);
+    --btn-disabled-bg:        linear-gradient(to bottom, #cccccc, #bdbdbd);
+
+    /* -------- 标题栏渐变 -------- */
+    --header-bg:              linear-gradient(to right, #1b5e20, #388e3c, #4caf50);
+    --log-header-bg:          linear-gradient(to right, #5d4037, #8d6e63);
+
+    /* -------- 字体 -------- */
+    --font-base: 'Segoe UI', Tahoma, Geneva, Verdana, 'PingFang SC',
+                 'Microsoft YaHei', sans-serif;
+    --font-mono: 'SF Mono', Monaco, Menlo, Consolas, monospace;
+}

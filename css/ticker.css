@@ -1,0 +1,162 @@
+/* ============================================================
+   ticker.css  —  右上角实时播报
+   消息队列 + 按等级着色 + 滑入滑出
+   ============================================================ */
+
+#ticker-container {
+    position: fixed;
+    z-index: 9500;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+    max-width: 320px;
+    transition: all var(--t-base);
+}
+
+/* 位置变体（通过 html 类切换）*/
+html.ticker-top-right    #ticker-container { top: 20px;    right: 20px;  align-items: flex-end; }
+html.ticker-bottom-right #ticker-container { bottom: 20px; right: 20px;  align-items: flex-end; flex-direction: column-reverse; }
+html.ticker-top-left     #ticker-container { top: 20px;    left: 20px;   align-items: flex-start; }
+html.ticker-bottom-left  #ticker-container { bottom: 20px; left: 20px;   align-items: flex-start; flex-direction: column-reverse; }
+html.ticker-top-center   #ticker-container { top: 20px;    left: 50%;    transform: translateX(-50%); align-items: center; }
+
+/* 默认位置（如果没设置）*/
+#ticker-container {
+    top: 20px;
+    right: 20px;
+    align-items: flex-end;
+}
+
+/* -------- 单条消息 -------- */
+.ticker-item {
+    pointer-events: auto;
+    background-color: rgba(255, 255, 255, 0.98);
+    border-left: 4px solid var(--c-info);
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: var(--c-text);
+    max-width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    word-break: break-word;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transform: translateX(120%);
+    opacity: 0;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                opacity 0.3s ease;
+}
+
+.ticker-item.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.ticker-item.hide {
+    transform: translateX(120%);
+    opacity: 0;
+}
+
+/* 左进左出（左侧位置）*/
+html.ticker-top-left .ticker-item,
+html.ticker-bottom-left .ticker-item {
+    transform: translateX(-120%);
+}
+html.ticker-top-left .ticker-item.show,
+html.ticker-bottom-left .ticker-item.show {
+    transform: translateX(0);
+}
+html.ticker-top-left .ticker-item.hide,
+html.ticker-bottom-left .ticker-item.hide {
+    transform: translateX(-120%);
+}
+
+/* 从上滑入（顶部中央）*/
+html.ticker-top-center .ticker-item {
+    transform: translateY(-120%);
+}
+html.ticker-top-center .ticker-item.show {
+    transform: translateY(0);
+}
+html.ticker-top-center .ticker-item.hide {
+    transform: translateY(-120%);
+}
+
+/* -------- 图标 -------- */
+.ticker-item .ticker-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    line-height: 1.2;
+}
+
+/* -------- 内容 -------- */
+.ticker-item .ticker-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.ticker-item .ticker-title {
+    font-weight: bold;
+    margin-bottom: 2px;
+    color: var(--c-primary-darker);
+}
+
+.ticker-item .ticker-text {
+    font-size: 0.85rem;
+    color: var(--c-text-muted);
+}
+
+/* -------- 按等级着色 -------- */
+.ticker-item.t-info    { border-left-color: var(--c-info); }
+.ticker-item.t-success { border-left-color: var(--c-success); background-color: #f1f8e9; }
+.ticker-item.t-warning { border-left-color: var(--c-warning); background-color: #fff8e1; }
+.ticker-item.t-danger  { border-left-color: var(--c-danger);  background-color: #ffebee; }
+.ticker-item.t-event   { border-left-color: var(--c-magic);   background-color: #f3e5f5; }
+
+/* -------- 关闭按钮 -------- */
+.ticker-item .ticker-close {
+    background: none;
+    border: none;
+    color: var(--c-text-light);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all var(--t-fast);
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.ticker-item .ticker-close:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+    color: var(--c-text);
+}
+
+/* -------- 移动端 -------- */
+@media (max-width: 576px) {
+    #ticker-container {
+        max-width: calc(100vw - 40px);
+        left: 20px;
+        right: 20px;
+        align-items: stretch;
+    }
+    html.ticker-top-center #ticker-container {
+        left: 20px;
+        right: 20px;
+        transform: none;
+    }
+    .ticker-item {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+    }
+}

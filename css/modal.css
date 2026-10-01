@@ -1,0 +1,145 @@
+/* ============================================================
+   modal.css  —  自定义通用弹窗（替代 alert / prompt / confirm）
+   用法：showModal('标题', '内容', [{text:'确定', primary:true}])
+   ============================================================ */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 20000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    animation: modalFadeIn 0.2s ease-out;
+}
+
+.modal-overlay.closing {
+    animation: modalFadeOut 0.2s ease-in;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes modalFadeOut {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}
+
+.modal-box {
+    background-color: var(--c-panel-solid);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    max-width: 480px;
+    width: 100%;
+    padding: 25px;
+    animation: modalSlideIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+}
+
+@keyframes modalSlideIn {
+    from { transform: scale(0.9) translateY(-20px); opacity: 0; }
+    to   { transform: scale(1) translateY(0);       opacity: 1; }
+}
+
+.modal-box h2 {
+    color: var(--c-primary-darker);
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-box p {
+    color: var(--c-text);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.modal-box input[type="text"],
+.modal-box input[type="number"] {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid var(--c-border);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    margin-bottom: 20px;
+    transition: border-color var(--t-base);
+    outline: none;
+    font-family: inherit;
+}
+
+.modal-box input[type="text"]:focus,
+.modal-box input[type="number"]:focus {
+    border-color: var(--c-primary);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.modal-actions button {
+    padding: 10px 22px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all var(--t-base);
+    background-color: var(--c-border);
+    color: var(--c-text);
+    min-width: 80px;
+    font-family: inherit;
+}
+
+.modal-actions button:hover {
+    background-color: #bdbdbd;
+    transform: translateY(-2px);
+}
+
+.modal-actions button.primary {
+    background: var(--btn-primary-bg);
+    color: var(--c-text-on-dark);
+    box-shadow: var(--shadow-primary);
+}
+
+.modal-actions button.primary:hover {
+    background: var(--btn-primary-bg-hover);
+    box-shadow: var(--shadow-primary-lg);
+}
+
+.modal-actions button.danger {
+    background: linear-gradient(to bottom, #f44336, #d32f2f);
+    color: var(--c-text-on-dark);
+}
+
+.modal-actions button.danger:hover {
+    background: linear-gradient(to bottom, #ef5350, #e53935);
+}
+
+/* 移动端 */
+@media (max-width: 576px) {
+    .modal-box {
+        padding: 20px;
+    }
+    .modal-box h2 {
+        font-size: 1.2rem;
+    }
+    .modal-actions button {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+        flex: 1;
+        min-width: 0;
+    }
+}

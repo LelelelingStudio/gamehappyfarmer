@@ -1,0 +1,294 @@
+/* ============================================================
+   farm.css  —  农田区域
+   ============================================================ */
+
+.farm-section {
+    background-color: var(--c-primary-bg);
+    padding: 20px;
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--c-border-primary);
+}
+
+.farm-section h2 {
+    color: var(--c-primary-darker);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.6rem;
+}
+
+.farm-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+/* -------- 农田网格 -------- */
+.farmland {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin: 20px 0;
+    background-color: var(--farmland-bg);
+    padding: 20px;
+    border-radius: var(--radius-md);
+    border: 3px solid var(--farmland-border);
+    min-height: 400px;
+    background-image: url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="60" height="60" fill="%23e8f5e9"/><circle cx="30" cy="30" r="2" fill="%23a5d6a7" opacity="0.3"/></svg>');
+}
+
+/* -------- 单个地块 -------- */
+.plot {
+    background: linear-gradient(145deg, var(--plot-bg-from), var(--plot-bg-to));
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all var(--t-base);
+    min-height: 90px;
+    border: 2px solid var(--plot-border);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: float 3s ease-in-out infinite;
+}
+
+.plot:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-5px); }
+}
+
+/* -------- 地块状态 -------- */
+.plot.empty {
+    background: linear-gradient(145deg, var(--plot-empty-from), var(--plot-empty-to));
+    border: 2px dashed var(--plot-empty-border);
+}
+
+.plot.owned {
+    background: linear-gradient(145deg, var(--plot-bg-from), var(--plot-border));
+}
+
+.plot.tilled {
+    background: linear-gradient(145deg, #d4b896, #b8956e);
+    border: 2px solid #8d6e63;
+}
+
+.plot.tilled .plot-info {
+    color: #4e342e;
+}
+
+.plot.planted {
+    background: linear-gradient(145deg, var(--c-primary-lighter), var(--plot-border));
+}
+
+.plot.locked {
+    background: linear-gradient(145deg, var(--plot-locked-from), var(--plot-locked-to));
+    border: 2px solid var(--plot-locked-border);
+    cursor: not-allowed;
+}
+
+.plot.sick {
+    background: linear-gradient(145deg, var(--plot-empty-from), var(--plot-empty-to));
+    border: 2px solid var(--plot-empty-border);
+    animation: sick-pulse 2s infinite;
+}
+
+@keyframes sick-pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.7; }
+}
+
+.plot.tilling {
+    animation: tilling-pulse 0.6s ease-in-out infinite;
+}
+
+@keyframes tilling-pulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(0.95); }
+}
+
+/* -------- 地块内元素 -------- */
+.plot-icon {
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+    transition: all var(--t-slow);
+    line-height: 1;
+}
+
+.plot.planted .plot-icon {
+    animation: grow 2s ease-in-out infinite;
+}
+
+@keyframes grow {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.1); }
+}
+
+.plot-info {
+    font-size: 0.8rem;
+    text-align: center;
+    font-weight: 600;
+    color: #2e7d32;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 3px 8px;
+    border-radius: 8px;
+    max-width: 90%;
+}
+
+.plot.empty .plot-info  { color: #5d4037; }
+.plot.locked .plot-info { color: #546e7a; }
+.plot.sick .plot-info   { color: #d32f2f; }
+
+/* -------- 徽章 / 指示器 -------- */
+.crop-stage {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: var(--c-primary-dark);
+    border: 1px solid var(--plot-border);
+}
+
+.water-indicator {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: var(--c-info);
+    font-size: 1rem;
+}
+
+.sick-indicator {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    color: var(--c-danger);
+    font-size: 1rem;
+}
+
+/* -------- 农田信息栏 -------- */
+.farm-info {
+    background-color: var(--c-primary-bg);
+    padding: 15px;
+    border-radius: var(--radius-md);
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    border: 2px solid var(--c-border-primary);
+}
+
+.season-display {
+    display: flex;
+    gap: 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    flex-wrap: wrap;
+}
+
+#season             { color: var(--c-primary); }
+#weather            { color: var(--c-info); }
+#merchant-countdown { color: var(--c-accent); }
+
+/* ============================================================
+   移动端
+   ============================================================ */
+
+html.layout-mobile .plot {
+    min-height: 70px;
+}
+
+html.layout-mobile .plot-icon {
+    font-size: 1.8rem;
+}
+
+html.layout-mobile .plot-info {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+}
+
+html.layout-mobile .farm-controls {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+html.layout-mobile .farm-info {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+html.layout-mobile .season-display {
+    flex-direction: column;
+    gap: 10px;
+}
+
+html.layout-mobile .farmland {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 12px;
+    gap: 8px;
+}
+
+/* ============================================================
+   响应式兜底
+   ============================================================ */
+
+@media (max-width: 1400px) { .farmland { grid-template-columns: repeat(5, 1fr); } }
+@media (max-width: 1200px) { .farmland { grid-template-columns: repeat(6, 1fr); } }
+@media (max-width: 992px)  { .farmland { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 768px)  {
+    .farmland { grid-template-columns: repeat(3, 1fr); }
+    .farm-controls { flex-direction: column; align-items: stretch; }
+    .farm-info { flex-direction: column; align-items: stretch; }
+    .season-display { flex-direction: column; gap: 10px; }
+}
+@media (max-width: 576px)  {
+    .farmland { grid-template-columns: repeat(2, 1fr); padding: 12px; gap: 8px; }
+    .plot { min-height: 70px; }
+    .plot-icon { font-size: 1.8rem; }
+    .plot-info { font-size: 0.7rem; padding: 2px 6px; }
+}
+/* ============================================================
+   农田分页（地块数量超过 PLOT_DISPLAY_BATCH 时出现）
+   ============================================================ */
+.farm-pager {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+.farm-pager .btn-small {
+    min-width: 84px;
+}
+
+.farm-pager .btn-small:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.farm-page-indicator {
+    font-weight: 600;
+    color: var(--c-primary-darker);
+}
+
+.farm-page-range {
+    font-size: 0.8rem;
+    color: var(--c-text-muted);
+}

@@ -1,0 +1,258 @@
+/* ============================================================
+   market.css  —  寄卖市场 + 拍卖会弹窗
+   ============================================================ */
+
+/* -------- 寄卖 -------- */
+.consign-content {
+    max-width: 900px;
+}
+
+.consign-body {
+    display: flex;
+    gap: 16px;
+    padding: 16px 20px 20px;
+}
+
+.consign-left,
+.consign-right {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.consign-left h4,
+.consign-right h4 {
+    color: var(--c-primary-darker);
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+#consign-inventory,
+#consign-list {
+    min-height: 160px;
+    border: 1px solid var(--c-border-light);
+    border-radius: var(--radius-md);
+    background-color: var(--c-panel-alt);
+}
+
+.consign-inv-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--c-border-light);
+    cursor: pointer;
+    transition: background-color var(--t-base);
+}
+
+.consign-inv-item:last-child {
+    border-bottom: none;
+}
+
+.consign-inv-item:hover {
+    background-color: var(--c-primary-bg-light);
+}
+
+.consign-entry {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--c-border-light);
+}
+
+.consign-entry:last-child {
+    border-bottom: none;
+}
+
+.consign-entry-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.consign-entry-price {
+    color: var(--c-accent);
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.consign-entry-meta {
+    font-size: 0.8rem;
+    color: var(--c-text-muted);
+    margin-top: 2px;
+}
+
+.consign-entry-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+/* -------- 拍卖 -------- */
+.auction-content {
+    max-width: 620px;
+}
+
+.auction-description {
+    color: var(--c-text-muted);
+    padding: 0 20px;
+    margin: 14px 0 0;
+    font-style: italic;
+    font-size: 0.95rem;
+}
+
+#auction-body {
+    padding: 0 20px 20px;
+}
+
+.auction-panel {
+    padding: 16px 0 4px;
+}
+
+.auction-title {
+    font-size: 1.1rem;
+    color: var(--c-primary-darker);
+    margin-bottom: 8px;
+}
+
+.auction-price {
+    font-size: 1.25rem;
+    margin: 10px 0;
+}
+
+.auction-price b {
+    color: var(--c-accent);
+}
+
+.auction-meta {
+    font-size: 0.9rem;
+    color: var(--c-text-muted);
+    line-height: 1.6;
+}
+
+.auction-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.auction-history {
+    margin-top: 18px;
+    border-top: 1px solid var(--c-border-light);
+    padding-top: 12px;
+}
+
+.auction-history h5 {
+    color: var(--c-primary-darker);
+    margin-bottom: 6px;
+}
+
+.auction-history-row {
+    font-size: 0.85rem;
+    color: var(--c-text-muted);
+    padding: 2px 0;
+}
+
+@media (max-width: 768px) {
+    .consign-body {
+        flex-direction: column;
+        padding: 12px 14px 16px;
+    }
+    #auction-body {
+        padding: 0 14px 16px;
+    }
+}
+
+/* ============================================================
+   商人板块 / 低价甩卖 / 二手市场 / 货币说明
+   ============================================================ */
+.merchant-hub-content { max-width: 720px; }
+.merchant-hub-countdown {
+    padding: 12px 20px;
+    color: var(--c-primary-darker);
+    font-weight: 600;
+    border-bottom: 1px solid var(--c-border-light);
+}
+.merchant-hub-list { padding: 12px 18px 18px; display: flex; flex-direction: column; gap: 10px; }
+.merchant-card {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 12px 14px; border: 2px solid var(--c-border);
+    border-radius: var(--radius-md); background: var(--c-panel-alt);
+}
+.merchant-card.here { border-color: var(--c-primary); background: var(--c-primary-bg-light); box-shadow: var(--shadow-primary); }
+.merchant-card-avatar { font-size: 2rem; line-height: 1; }
+.merchant-card-body { flex: 1; min-width: 0; }
+.merchant-card-name { font-weight: 700; color: var(--c-text); }
+.merchant-card-tagline { font-size: 0.85rem; color: var(--c-primary-dark); }
+.merchant-card-desc { font-size: 0.82rem; color: var(--c-text-muted); margin-top: 2px; }
+.merchant-card-rules { font-size: 0.75rem; color: var(--c-text-light); margin-top: 4px; }
+.merchant-card-actions { flex-shrink: 0; align-self: center; }
+
+.merchant-trade-body { display: flex; gap: 16px; padding: 16px 20px 20px; }
+.merchant-trade-left {
+    flex: 0 0 210px; text-align: center;
+    border-right: 1px solid var(--c-border-light); padding-right: 14px;
+}
+.merchant-trade-right { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.merchant-trade-title { font-weight: 700; color: var(--c-primary-darker); margin-bottom: 8px; }
+.merchant-trade-right .merchant-items { min-height: 140px; }
+.merchant-item.selected { background: var(--c-primary-bg-light); }
+
+.quick-sell-content { max-width: 620px; }
+.quick-sell-hint { padding: 12px 20px; color: var(--c-text-muted); font-size: 0.9rem; }
+.quick-sell-list { padding: 0 18px 12px; display: flex; flex-direction: column; gap: 8px; }
+.quick-sell-item {
+    display: flex; justify-content: space-between; align-items: center; gap: 10px;
+    padding: 10px 12px; border: 2px solid var(--c-border-light);
+    border-radius: var(--radius-md); background: var(--c-panel-alt); cursor: pointer;
+}
+.quick-sell-item.picked { border-color: var(--c-primary); background: var(--c-primary-bg-light); }
+.quick-sell-item-name { font-weight: 600; }
+.quick-sell-item-meta { font-size: 0.8rem; color: var(--c-text-muted); }
+.quick-sell-item-total { color: var(--c-accent); font-weight: 700; white-space: nowrap; }
+.quick-sell-footer {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    padding: 12px 20px 18px; border-top: 1px solid var(--c-border-light); font-weight: 600;
+}
+
+.secondhand-content { max-width: 640px; }
+.second-hand-hint { padding: 12px 20px; color: var(--c-text-muted); font-size: 0.9rem; }
+.second-hand-list { padding: 0 18px 18px; display: flex; flex-direction: column; gap: 8px; }
+.second-hand-item {
+    display: flex; justify-content: space-between; align-items: center; gap: 10px;
+    padding: 10px 12px; border: 1px solid var(--c-border-light); border-radius: var(--radius-md);
+}
+.second-hand-note { font-size: 0.78rem; color: #c62828; }
+.second-hand-side { display: flex; align-items: center; gap: 10px; }
+.second-hand-price { color: var(--c-accent); font-weight: 700; white-space: nowrap; }
+
+.mall-other-header { display: flex; justify-content: flex-end; margin-bottom: 8px; }
+.mall-other-title { font-weight: 700; color: var(--c-primary-darker); margin: 10px 0 4px; }
+
+.currency-simple { padding: 30px 20px; text-align: center; }
+.currency-simple-balance { font-size: 2rem; font-weight: 800; color: var(--c-primary-darker); }
+.currency-simple-note { margin-top: 12px; color: var(--c-text-muted); }
+
+.auction-host { margin-bottom: 6px; }
+.auction-host-tag {
+    display: inline-block; padding: 3px 10px; border-radius: var(--radius-round);
+    font-size: 0.8rem; font-weight: 600; background: var(--c-primary-lighter); color: var(--c-primary-darker);
+}
+.auction-host-tag.seller { background: #ffe0b2; color: #e65100; }
+.auction-pick-list { max-height: 300px; margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+.auction-pick-item {
+    display: flex; justify-content: space-between; padding: 8px 10px;
+    border: 1px solid var(--c-border-light); border-radius: var(--radius-sm); cursor: pointer;
+}
+.auction-pick-item:hover { background: var(--c-primary-bg-light); }
+.auction-npc-hint { margin-top: 14px; font-style: italic; }
+
+@media (max-width: 768px) {
+    .merchant-trade-body { flex-direction: column; }
+    .merchant-trade-left { flex: none; border-right: none; border-bottom: 1px solid var(--c-border-light); padding: 0 0 12px; }
+    .merchant-card { flex-wrap: wrap; }
+}

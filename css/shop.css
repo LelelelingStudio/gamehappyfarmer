@@ -1,0 +1,118 @@
+/* ============================================================
+   shop.css  —  种子商店
+   crop-filter / crops-list / crop-item
+   ============================================================ */
+
+/* -------- 过滤器行 -------- */
+.crop-filter {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.crops-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.crop-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: linear-gradient(180deg, #ffffff, #f6f9f6);
+    border-radius: 14px;
+    border: 1px solid rgba(77, 136, 85, 0.18);
+    border-left: 5px solid var(--c-primary);
+    transition: transform var(--t-base), box-shadow var(--t-base), border-color var(--t-base);
+    box-shadow: 0 6px 14px rgba(37, 78, 49, 0.08);
+    cursor: pointer;
+}
+
+.crop-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 18px rgba(37, 78, 49, 0.12);
+    border-color: rgba(76, 175, 80, 0.35);
+}
+
+.crop-item.selected {
+    background-color: var(--c-primary-bg-light);
+    border-left-color: var(--c-accent);
+}
+
+/* -------- 作物名 -------- */
+.crop-name {
+    font-weight: bold;
+    color: var(--c-primary-darker);
+    font-size: 1rem;
+}
+
+/* -------- 价格 -------- */
+.crop-price {
+    color: var(--c-accent);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* -------- 描述 / 生长时间 -------- */
+.crop-growth {
+    font-size: 0.85rem;
+    color: var(--c-text-muted);
+    margin-top: 3px;
+}
+
+/* -------- 未解锁的作物 -------- */
+.crop-item.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-left-color: var(--c-text-light);
+}
+
+.crop-item.locked:hover {
+    transform: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.crop-item.locked .crop-name::after {
+    content: ' 🔒';
+    font-size: 0.8rem;
+}
+
+/* -------- 数量/等级标签 -------- */
+.crop-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    background-color: var(--c-primary-lighter);
+    color: var(--c-primary-darker);
+    margin-left: 6px;
+}
+
+.crop-badge.fruit     { background-color: #ffe0b2; color: #e65100; }
+.crop-badge.special   { background-color: #f3e5f5; color: #6a1b9a; }
+.crop-badge.medicine  { background-color: #e1f5fe; color: #01579b; }
+.crop-badge.processing{ background-color: #f0f4c3; color: #827717; }
+
+/* ============================================================
+   移动端
+   ============================================================ */
+
+@media (max-width: 768px) {
+    .crop-item {
+        padding: 10px;
+    }
+    .crop-name {
+        font-size: 0.9rem;
+    }
+    .crop-price {
+        font-size: 1rem;
+    }
+    .crop-growth {
+        font-size: 0.75rem;
+    }
+}

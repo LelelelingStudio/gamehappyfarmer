@@ -1,0 +1,657 @@
+/* ============================================================
+   settings.css  —  设置面板 + 用户中心 + 货币兑换 + 规则文档
+   ============================================================ */
+
+/* ============================================================
+   通用：设置面板里的每一行
+   ============================================================ */
+.settings-body,
+.user-body {
+    padding: 20px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.settings-section {
+    margin-bottom: 22px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--c-border-light);
+}
+
+.settings-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.settings-section-title {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--c-primary-darker);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.settings-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.settings-item-label {
+    font-size: 0.95rem;
+    color: var(--c-text);
+    flex: 1;
+    min-width: 120px;
+}
+
+.settings-item-desc {
+    font-size: 0.8rem;
+    color: var(--c-text-light);
+    margin-top: 2px;
+}
+
+.settings-control {
+    flex-shrink: 0;
+}
+
+/* -------- 开关（toggle）-------- */
+.toggle-switch {
+    position: relative;
+    width: 48px;
+    height: 26px;
+    background-color: #ccc;
+    border-radius: 13px;
+    cursor: pointer;
+    transition: background-color var(--t-base);
+    border: none;
+    padding: 0;
+}
+
+.toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: left var(--t-base);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.toggle-switch.on {
+    background-color: var(--c-primary);
+}
+
+.toggle-switch.on::after {
+    left: 25px;
+}
+
+/* -------- 下拉选择 -------- */
+.settings-select {
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--c-border);
+    background-color: #fff;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--c-text);
+    min-width: 120px;
+}
+
+.settings-select:focus {
+    outline: none;
+    border-color: var(--c-primary);
+}
+
+/* -------- 输入框 -------- */
+.settings-input {
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--c-border);
+    background-color: #fff;
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: var(--c-text);
+    min-width: 120px;
+}
+
+.settings-input:focus {
+    outline: none;
+    border-color: var(--c-primary);
+}
+
+/* -------- 危险按钮 -------- */
+.btn-danger {
+    background: linear-gradient(to bottom, #f44336, #d32f2f);
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(to bottom, #ef5350, #e53935);
+}
+
+/* ============================================================
+   用户中心
+   ============================================================ */
+.user-profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--c-border-light);
+    margin-bottom: 20px;
+}
+
+.user-avatar-large {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: var(--c-primary-lighter);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    overflow: hidden;
+    border: 4px solid var(--c-primary);
+    cursor: pointer;
+    transition: transform var(--t-base);
+    position: relative;
+}
+
+.user-avatar-large:hover {
+    transform: scale(1.05);
+}
+
+.user-avatar-large:hover::after {
+    /* 文本来自 i18n：通过 <title> 属性展示在 tooltip 上；这里用 CSS attr() 回退 */
+    content: attr(data-hover-tip);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 0.75rem;
+    padding: 4px;
+    text-align: center;
+}
+
+.user-avatar-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-nickname-edit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--c-primary-darker);
+}
+
+.user-nickname-edit input {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--c-primary-darker);
+    border: none;
+    background: transparent;
+    text-align: center;
+    font-family: inherit;
+    border-bottom: 1px dashed var(--c-primary-light);
+    padding: 2px 8px;
+    max-width: 180px;
+}
+
+.user-nickname-edit input:focus {
+    outline: none;
+    border-bottom-color: var(--c-primary);
+}
+
+.user-id-display {
+    font-size: 0.8rem;
+    color: var(--c-text-light);
+    font-family: var(--font-mono);
+}
+
+.user-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.user-stat-card {
+    background-color: var(--c-primary-bg-light);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    text-align: center;
+    border: 1px solid var(--c-border-primary);
+}
+
+.user-stat-label {
+    font-size: 0.8rem;
+    color: var(--c-text-muted);
+    margin-bottom: 4px;
+}
+
+.user-stat-value {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--c-primary-darker);
+}
+
+/* ============================================================
+   货币兑换
+   ============================================================ */
+.currency-body {
+    padding: 20px;
+}
+
+.currency-balance-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: var(--c-primary-bg-light);
+    border-radius: var(--radius-md);
+}
+
+.currency-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background-color: #fff;
+    border-radius: 20px;
+    border: 1px solid var(--c-border-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.currency-chip .currency-icon {
+    font-size: 1.1rem;
+}
+
+.currency-converter {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.currency-converter-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.currency-converter-row input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    min-width: 100px;
+    font-family: inherit;
+}
+
+.currency-arrow {
+    font-size: 1.5rem;
+    color: var(--c-primary);
+}
+
+.currency-preview {
+    padding: 15px;
+    background-color: var(--c-primary-bg-light);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--c-primary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.currency-preview .fee-warning {
+    color: var(--c-danger);
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* ============================================================
+   规则文档
+   ============================================================ */
+.rules-content {
+    max-width: 900px;
+}
+
+.rules-body {
+    padding: 30px;
+    max-height: 75vh;
+    overflow-y: auto;
+    line-height: 1.8;
+    color: var(--c-text);
+    font-size: 0.95rem;
+}
+
+.rules-body h1 {
+    font-size: 1.8rem;
+    color: var(--c-primary-darker);
+    margin: 20px 0 10px;
+    border-bottom: 2px solid var(--c-primary-lighter);
+    padding-bottom: 8px;
+}
+
+.rules-body h2 {
+    font-size: 1.4rem;
+    color: var(--c-primary-darker);
+    margin: 24px 0 10px;
+}
+
+.rules-body h3 {
+    font-size: 1.15rem;
+    color: var(--c-primary-dark);
+    margin: 18px 0 8px;
+}
+
+.rules-body p {
+    margin-bottom: 12px;
+}
+
+.rules-body ul,
+.rules-body ol {
+    padding-left: 25px;
+    margin-bottom: 12px;
+}
+
+.rules-body li {
+    margin-bottom: 6px;
+}
+
+.rules-body code {
+    background-color: var(--c-primary-bg-light);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    color: var(--c-primary-darker);
+}
+
+.rules-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+
+.rules-body th,
+.rules-body td {
+    border: 1px solid var(--c-border);
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.rules-body th {
+    background-color: var(--c-primary-bg-light);
+    color: var(--c-primary-darker);
+    font-weight: bold;
+}
+
+.rules-body blockquote {
+    border-left: 4px solid var(--c-primary);
+    padding: 8px 15px;
+    background-color: var(--c-primary-bg-light);
+    margin: 15px 0;
+    color: var(--c-text-muted);
+    font-style: italic;
+}
+
+/* ============================================================
+   移动端
+   ============================================================ */
+html.layout-mobile .settings-body,
+html.layout-mobile .user-body {
+    padding: 15px;
+}
+
+html.layout-mobile .settings-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+html.layout-mobile .settings-control {
+    width: 100%;
+}
+
+html.layout-mobile .settings-select,
+html.layout-mobile .settings-input {
+    width: 100%;
+}
+
+html.layout-mobile .user-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+html.layout-mobile .rules-body {
+    padding: 20px;
+    font-size: 0.9rem;
+}
+/* ============================================================
+   头像选择（素材库 / emoji / 自定义上传）
+   ============================================================ */
+.user-nickname-hint {
+    font-size: 0.75rem;
+    color: var(--c-text-light);
+    margin-top: 4px;
+    width: 100%;
+}
+
+.hidden-file-input {
+    display: none;
+}
+
+.user-profile-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 16px 0 4px;
+}
+
+.avatar-picker {
+    margin-top: 18px;
+}
+
+.avatar-emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+    gap: 8px;
+    margin: 10px 0 16px;
+}
+
+.avatar-lib-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.avatar-choice {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    padding: 4px;
+    border: 2px solid var(--c-border);
+    border-radius: var(--radius-md);
+    background-color: var(--c-panel-alt);
+    cursor: pointer;
+    font-size: 1.5rem;
+    line-height: 1;
+    overflow: hidden;
+    transition: all var(--t-base);
+    font-family: inherit;
+}
+
+.avatar-choice:hover {
+    border-color: var(--c-primary-light);
+    transform: translateY(-2px);
+}
+
+.avatar-choice.active {
+    border-color: var(--c-primary);
+    background-color: var(--c-primary-bg-light);
+    box-shadow: var(--shadow-primary);
+}
+
+.avatar-lib-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: calc(var(--radius-md) - 2px);
+}
+
+/* 图片还没放进素材库目录时：显示灰色编号占位，避免裂图 */
+.avatar-lib-fallback {
+    display: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--c-text-light);
+}
+
+.avatar-lib-item.missing {
+    border-style: dashed;
+    background-color: var(--c-panel-grey);
+    cursor: pointer;
+}
+
+.avatar-lib-item.missing .avatar-lib-img {
+    display: none;
+}
+
+.avatar-lib-item.missing .avatar-lib-fallback {
+    display: block;
+}
+
+.avatar-picker-hint {
+    font-size: 0.75rem;
+    color: var(--c-text-light);
+    line-height: 1.5;
+    margin-bottom: 6px;
+    word-break: break-all;
+}
+
+/* 头像显示（顶栏 / 用户中心） */
+.avatar-img-hud {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+.avatar-img-lg {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+.avatar-emoji {
+    font-size: 1.4em;
+    line-height: 1;
+}
+
+.avatar-broken::after {
+    content: '👤';
+    font-size: 1.2em;
+}
+
+.avatar-picker-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 4px;
+}
+
+/* -------- 头像选择弹窗 -------- */
+.avatar-content {
+    max-width: 640px;
+}
+
+.avatar-picker-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.avatar-picker-current {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.avatar-current-preview {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: var(--c-primary-bg-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-size: 1.4rem;
+}
+
+.avatar-current-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-current-emoji {
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+.avatar-dialog-section {
+    padding: 14px 18px 4px;
+}
+
+.avatar-dialog-subtitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-weight: 700;
+    color: var(--c-primary-darker);
+    margin-bottom: 8px;
+}
+
+#avatar-body {
+    padding: 0 0 18px;
+}
+
+#avatar-body .avatar-lib-grid {
+    grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+}
+
+.avatar-lib-item {
+    aspect-ratio: 1 / 1;
+}

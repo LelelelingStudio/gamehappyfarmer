@@ -1,0 +1,323 @@
+/* ============================================================
+   effects.css  —  游戏特效
+   所有特效都用 CSS 动画 + JS 动态创建 DOM，不引入库
+   ============================================================ */
+
+/* ============================================================
+   1. 金币飘字（收获 / 出售）
+   ============================================================ */
+.fx-float-text {
+    position: fixed;
+    pointer-events: none;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--c-accent);
+    text-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.3),
+        0 0 8px rgba(255, 235, 59, 0.8);
+    z-index: 15000;
+    animation: fxFloatUp 1.2s ease-out forwards;
+    font-family: var(--font-base);
+    user-select: none;
+}
+
+.fx-float-text.gold     { color: #ffc107; }
+.fx-float-text.exp      { color: #2196f3; }
+.fx-float-text.danger   { color: var(--c-danger); }
+.fx-float-text.success  { color: var(--c-success); }
+
+@keyframes fxFloatUp {
+    0% {
+        transform: translate(-50%, 0) scale(0.6);
+        opacity: 0;
+    }
+    15% {
+        transform: translate(-50%, -10px) scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -80px) scale(1);
+        opacity: 0;
+    }
+}
+
+/* ============================================================
+   2. 升级撒花
+   ============================================================ */
+.fx-confetti {
+    position: fixed;
+    top: -20px;
+    width: 10px;
+    height: 20px;
+    pointer-events: none;
+    z-index: 14000;
+    animation: fxConfettiFall linear forwards;
+    border-radius: 2px;
+}
+
+@keyframes fxConfettiFall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(105vh) rotate(720deg);
+        opacity: 0.7;
+    }
+}
+
+/* ============================================================
+   3. 浇水涟漪
+   ============================================================ */
+.fx-ripple {
+    position: absolute;
+    pointer-events: none;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(33, 150, 243, 0.7);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: fxRipple 1s ease-out forwards;
+    z-index: 100;
+}
+
+@keyframes fxRipple {
+    0% {
+        width: 20px;
+        height: 20px;
+        opacity: 1;
+    }
+    100% {
+        width: 120px;
+        height: 120px;
+        opacity: 0;
+    }
+}
+
+/* ============================================================
+   4. 收获爆闪
+   ============================================================ */
+.fx-burst {
+    position: absolute;
+    pointer-events: none;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: #ffeb3b;
+    box-shadow: 0 0 10px #ffeb3b;
+    animation: fxBurst 0.8s ease-out forwards;
+    z-index: 200;
+}
+
+@keyframes fxBurst {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--dx), var(--dy)) scale(0);
+        opacity: 0;
+    }
+}
+
+/* ============================================================
+   5. 种植弹出
+   ============================================================ */
+.fx-pop {
+    animation: fxPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes fxPop {
+    0%   { transform: scale(0.3); opacity: 0; }
+    60%  { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* ============================================================
+   6. 成就解锁横幅
+   ============================================================ */
+.fx-achievement-banner {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: linear-gradient(135deg, #ffd54f, #ffb300);
+    color: #3e2723;
+    padding: 18px 30px;
+    border-radius: var(--radius-xl);
+    box-shadow: 0 10px 30px rgba(255, 179, 0, 0.5);
+    z-index: 16000;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-weight: bold;
+    pointer-events: none;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-width: 90vw;
+}
+
+.fx-achievement-banner.show {
+    transform: translateX(-50%) translateY(0);
+}
+
+.fx-achievement-banner .fx-ach-icon {
+    font-size: 2rem;
+}
+
+.fx-achievement-banner .fx-ach-title {
+    font-size: 0.9rem;
+    opacity: 0.85;
+    margin-bottom: 2px;
+}
+
+.fx-achievement-banner .fx-ach-name {
+    font-size: 1.2rem;
+}
+
+/* ============================================================
+   7. 加工完成闪光
+   ============================================================ */
+.fx-flash {
+    animation: fxFlash 0.6s ease-out;
+}
+
+@keyframes fxFlash {
+    0%   { background-color: transparent; }
+    30%  { background-color: rgba(255, 235, 59, 0.6); }
+    100% { background-color: transparent; }
+}
+
+/* ============================================================
+   8. 数值滚动（.fx-num-roll）
+   ============================================================ */
+.fx-num-roll {
+    animation: fxNumRoll 0.4s ease-out;
+    display: inline-block;
+}
+
+@keyframes fxNumRoll {
+    0%   { transform: translateY(-8px); opacity: 0.3; color: #4caf50; }
+    100% { transform: translateY(0);    opacity: 1;   color: inherit; }
+}
+
+/* ============================================================
+   9. 皮肤切换淡入
+   ============================================================ */
+html.skin-transition,
+html.skin-transition body,
+html.skin-transition .container,
+html.skin-transition button {
+    transition:
+        background-color 0.5s ease,
+        background 0.5s ease,
+        color 0.5s ease,
+        border-color 0.5s ease,
+        box-shadow 0.5s ease !important;
+}
+
+/* ============================================================
+   10. 翻土圆环（配合 canvas 使用）
+   ============================================================ */
+#till-canvas {
+    background-color: var(--c-primary-bg-light);
+    border-radius: 50%;
+    border: 3px solid var(--c-primary-lighter);
+    cursor: grab;
+    touch-action: none;
+    display: block;
+    margin: 0 auto;
+}
+
+#till-canvas:active {
+    cursor: grabbing;
+}
+
+.till-game-body {
+    padding: 20px;
+    text-align: center;
+}
+
+.till-game-hint {
+    margin-bottom: 15px;
+    color: var(--c-text-muted);
+    font-size: 0.9rem;
+}
+
+.till-game-stage {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 0 auto 15px;
+}
+
+.till-progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--c-primary-darker);
+    pointer-events: none;
+    text-shadow: 0 2px 8px rgba(255, 255, 255, 0.9);
+}
+
+.till-progress-bar {
+    height: 12px;
+    background-color: var(--c-border);
+    border-radius: 6px;
+    overflow: hidden;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.till-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(to right, var(--c-primary), var(--c-primary-light));
+    border-radius: 6px;
+    transition: width 0.15s linear;
+}
+
+/* ============================================================
+   11. 屏震（错误 / 危险）
+   ============================================================ */
+.fx-shake {
+    animation: fxShake 0.4s ease-in-out;
+}
+
+@keyframes fxShake {
+    0%, 100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    40%      { transform: translateX(6px); }
+    60%      { transform: translateX(-4px); }
+    80%      { transform: translateX(4px); }
+}
+
+/* ============================================================
+   12. 特效关闭时（设置里关闭 FX）
+   ============================================================ */
+html.fx-off .fx-float-text,
+html.fx-off .fx-confetti,
+html.fx-off .fx-ripple,
+html.fx-off .fx-burst,
+html.fx-off .fx-achievement-banner {
+    display: none !important;
+}
+
+/* ============================================================
+   移动端
+   ============================================================ */
+html.layout-mobile .fx-float-text {
+    font-size: 1.1rem;
+}
+
+html.layout-mobile .till-game-stage {
+    width: 260px;
+    height: 260px;
+}
+
+html.layout-mobile #till-canvas {
+    width: 260px;
+    height: 260px;
+}

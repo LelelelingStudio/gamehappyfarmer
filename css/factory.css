@@ -1,0 +1,320 @@
+/* ============================================================
+   factory.css  —  加工厂弹窗
+   搜索框 / 等级过滤 / 标签页 / 产品卡 / 进度条
+   ============================================================ */
+
+/* -------- 加工厂/商城的描述文字 -------- */
+.factory-description,
+.merchant-description {
+    color: var(--c-text-muted);
+    padding: 0 20px;
+    margin: 15px 0;
+    font-style: italic;
+}
+
+/* -------- 搜索框 + 等级过滤行 -------- */
+.factory-search-box {
+    padding: 12px 20px 8px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.factory-search-box input {
+    flex: 1;
+    min-width: 220px;
+    padding: 11px 16px;
+    border-radius: 999px;
+    border: 2px solid rgba(38, 120, 54, 0.2);
+    background: rgba(255,255,255,0.75);
+    outline: none;
+    font-size: 0.95rem;
+    transition: border-color var(--t-base), box-shadow var(--t-base), transform var(--t-base);
+}
+
+.factory-search-box input:focus {
+    border-color: var(--c-primary);
+    box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.12);
+    transform: translateY(-1px);
+}
+
+.level-filter-btn {
+    padding: 7px 14px;
+    border: 1px solid rgba(85, 113, 89, 0.35);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.7);
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all var(--t-base);
+    color: var(--c-text);
+    font-weight: 700;
+}
+
+.level-filter-btn.active {
+    background: linear-gradient(180deg, #4caf50, #3c8d40);
+    color: var(--c-text-on-dark);
+    border-color: rgba(34, 91, 39, 0.8);
+    box-shadow: 0 8px 16px rgba(49, 116, 56, 0.15);
+}
+
+.level-filter-btn:hover:not(.active) {
+    background: #e4f5e3;
+    transform: translateY(-1px);
+}
+
+/* -------- 标签页（可加工/加工中/已完成）-------- */
+.factory-tabs {
+    display: flex;
+    gap: 10px;
+    padding: 0 20px;
+    margin-bottom: 0;
+    border-bottom: 2px solid var(--c-border);
+}
+
+.factory-tab {
+    padding: 10px 20px;
+    background: rgba(255,255,255,0.35);
+    border: 1px solid rgba(85, 113, 89, 0.2);
+    border-bottom: none;
+    border-radius: 14px 14px 0 0;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all var(--t-base);
+    font-size: 0.9rem;
+    color: var(--c-text);
+}
+
+.factory-tab.active {
+    background: linear-gradient(180deg, #4caf50, #3c8d40);
+    color: var(--c-text-on-dark);
+    box-shadow: 0 -4px 16px rgba(46, 125, 50, 0.12);
+}
+
+.factory-tab:hover:not(.active) {
+    background-color: #dfeee1;
+}
+
+.factory-content-tabs {
+    padding: 20px;
+    flex: 1;
+    overflow: hidden;
+    min-height: 300px;
+}
+
+/* -------- 产品卡 -------- */
+.factory-product {
+    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(246,249,246,0.95));
+    padding: 16px 18px;
+    border-radius: 18px;
+    margin-bottom: 16px;
+    border: 2px solid rgba(126, 165, 126, 0.2);
+    box-shadow: 0 8px 18px rgba(60, 102, 64, 0.08);
+    transition: all var(--t-base);
+}
+
+.factory-product:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(54, 94, 60, 0.12);
+    border-color: rgba(76, 175, 80, 0.45);
+}
+
+.factory-product.factory-ready {
+    border-color: rgba(76, 175, 80, 0.45);
+    background: linear-gradient(180deg, #f5fff3, #f0f9ee);
+}
+
+.factory-product.factory-partial {
+    border-color: rgba(255, 170, 0, 0.45);
+    background: linear-gradient(180deg, #fffdf5, #fffaf0);
+}
+
+.product-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.product-name {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--c-primary-darker);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.product-price {
+    font-weight: bold;
+    font-size: 1.3rem;
+    color: var(--c-accent);
+}
+
+.product-desc {
+    color: var(--c-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 10px;
+}
+
+/* -------- 加工信息行 -------- */
+.product-requirements {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.requirement {
+    text-align: center;
+    flex: 1;
+    min-width: 60px;
+}
+
+.requirement-label {
+    font-size: 0.85rem;
+    color: var(--c-text-muted);
+}
+
+.requirement-value {
+    font-weight: bold;
+    color: var(--c-primary-darker);
+}
+
+/* -------- 原料需求行 -------- */
+.material-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    padding: 7px 10px;
+    border-radius: 10px;
+    transition: background-color var(--t-base);
+    font-size: 0.9rem;
+}
+
+.material-row.has-enough {
+    background-color: rgba(76, 175, 80, 0.08);
+    color: #156e2a;
+}
+
+.material-row.not-enough {
+    background-color: rgba(244, 67, 54, 0.06);
+    color: #8a2a2a;
+}
+
+.material-row a {
+    color: var(--c-primary-darker);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.material-row a.product-link {
+    color: #e65100;
+}
+
+/* -------- 加工进度条 -------- */
+.factory-action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.factory-meta {
+    color: var(--c-text-muted);
+    font-size: 0.9rem;
+}
+
+.factory-status {
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.factory-status.status-ready {
+    background: rgba(76, 175, 80, 0.12);
+    color: #186c2d;
+}
+
+.factory-status.status-partial {
+    background: rgba(255, 152, 0, 0.12);
+    color: #a35d00;
+}
+
+.factory-status.status-missing {
+    background: rgba(244, 67, 54, 0.12);
+    color: #9d2e2e;
+}
+
+.factory-button-wrap {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
+.factory-button-wrap .btn {
+    min-width: 120px;
+}
+
+.processing-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: var(--c-primary-bg-light);
+    border-radius: 8px;
+}
+
+.processing-progress {
+    flex: 1;
+    height: 15px;
+    background-color: var(--c-border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.processing-progress-bar {
+    height: 100%;
+    background: linear-gradient(to right, var(--c-primary), var(--c-primary-light));
+    width: 0%;
+    border-radius: 8px;
+    transition: width var(--t-slow);
+}
+
+/* ============================================================
+   移动端：加工厂全屏
+   ============================================================ */
+
+@media (max-width: 768px) {
+    .factory-tabs {
+        padding: 0 10px;
+        gap: 5px;
+    }
+    .factory-tab {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+    .factory-content-tabs {
+        padding: 10px;
+    }
+    .product-name {
+        font-size: 1rem;
+    }
+    .product-price {
+        font-size: 1.1rem;
+    }
+}
